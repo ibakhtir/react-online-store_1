@@ -1,0 +1,11 @@
+body {
+  background-color: #fffbf0;
+}
+
+.container-auth {
+  height: 100vh;
+}
+
+.auth-block {
+  width: max-content;
+}
