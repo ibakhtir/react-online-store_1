@@ -10,6 +10,7 @@ const httpAuth = axios.create({
   baseURL: "https://identitytoolkit.googleapis.com/v1/",
   params: { key: "AIzaSyAZOEcCcApwhCVD9ElCSpCqt_cEJ2xOPGU" }
 });
+
 const AuthContext = React.createContext();
 
 export const useAuth = () => {

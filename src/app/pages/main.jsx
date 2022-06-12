@@ -1,7 +1,14 @@
 import React from "react";
 
+import ItemList from "../components/ui/itemList";
+import ItemProvider from "../hooks/useItem";
+
 const Main = () => {
-  return <h1>Главная страница</h1>;
+  return (
+    <ItemProvider>
+      <ItemList />
+    </ItemProvider>
+  );
 };
 
 export default Main;
