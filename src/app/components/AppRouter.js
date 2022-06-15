@@ -3,13 +3,14 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import { authRoutes, publicRoutes } from "../routes";
 import { MAIN_ROUTE } from "../utils/constants";
+import { useAuth } from "../hooks/useAuth";
 
 const AppRouter = () => {
-  const isAuth = false; // временная заглушка, нужно получать из базы
+  const { currentUser } = useAuth();
 
   return (
     <Switch>
-      {isAuth &&
+      {currentUser &&
         authRoutes.map(({ path, Component }) => (
           <Route key={path} path={path} component={Component} exact />
         ))}

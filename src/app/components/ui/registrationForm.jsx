@@ -65,6 +65,7 @@ const RegistrationForm = () => {
         history.push(MAIN_ROUTE);
       } catch (error) {
         setErrors(error);
+        setValid(false);
       }
     } else {
       setValid(isValid);

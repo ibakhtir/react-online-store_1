@@ -2,27 +2,47 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import configFile from "../config.json";
+import { httpAuth } from "../hooks/useAuth";
+import localStorageService from "./localStorage.service";
 
 const http = axios.create({
   baseURL: configFile.apiEndpoint
 });
 
 function transformData(data) {
-  if (data) {
+  if (data && !data._id) {
     return Object.keys(data).map((key) => ({
       ...data[key]
     }));
   } else {
-    return [];
+    return data;
   }
 }
 
 http.interceptors.request.use(
-  function (config) {
+  async function (config) {
     if (configFile.isFireBase) {
       const containSlash = /\/$/gi.test(config.url);
       config.url =
         (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
+      const expiresDate = localStorageService.getTokenExpiresDate();
+      const refreshToken = localStorageService.getRefreshToken();
+      if (refreshToken && expiresDate < Date.now()) {
+        const { data } = await httpAuth.post("token", {
+          grant_type: "refresh_token",
+          refresh_token: refreshToken
+        });
+        localStorageService.setTokens({
+          idToken: data.id_token,
+          refreshToken: data.refresh_token,
+          expiresIn: data.expires_id,
+          localId: data.user_id
+        });
+      }
+      const accessToken = localStorageService.getAccessToken();
+      if (accessToken) {
+        config.params = { ...config.params, auth: accessToken };
+      }
     }
     return config;
   },
@@ -43,9 +63,8 @@ http.interceptors.response.use(
       error.response &&
       error.response.status >= 400 &&
       error.response.status < 500;
-
     if (!expectedErrors) {
-      toast.error("Что-то пошло не так. Попробуйте позже.");
+      toast.error("Непредвиденная ошибка. Попробуйте позже.");
     }
     return Promise.reject(error);
   }
@@ -57,4 +76,5 @@ const httpService = {
   put: http.put,
   delete: http.delete
 };
+
 export default httpService;

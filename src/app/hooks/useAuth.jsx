@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-import { setTokens } from "../services/localStorage.service";
+import localStorageService, {
+  setTokens
+} from "../services/localStorage.service";
 import userService from "../services/user.service";
+import { MAIN_ROUTE } from "../utils/constants";
 
-const httpAuth = axios.create({
+export const httpAuth = axios.create({
   baseURL: "https://identitytoolkit.googleapis.com/v1/",
   params: { key: "AIzaSyAZOEcCcApwhCVD9ElCSpCqt_cEJ2xOPGU" }
 });
@@ -18,8 +22,10 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [currentUser, setUser] = useState({});
+  const [currentUser, setUser] = useState();
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const history = useHistory();
 
   async function signIn({ email, password }) {
     const url = "accounts:signInWithPassword";
@@ -30,6 +36,7 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
+      await getUserData();
     } catch (error) {
       // errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -45,6 +52,12 @@ const AuthProvider = ({ children }) => {
         }
       }
     }
+  }
+
+  function signOut() {
+    localStorageService.removeAuthData();
+    setUser(null);
+    history.push(MAIN_ROUTE);
   }
 
   async function signUp({ email, password, ...rest }) {
@@ -73,12 +86,31 @@ const AuthProvider = ({ children }) => {
 
   async function createUser(data) {
     try {
-      const { content } = userService.create(data);
+      const { content } = await userService.create(data);
       setUser(content);
     } catch (error) {
       errorCatcher(error);
     }
   }
+
+  async function getUserData() {
+    try {
+      const { content } = await userService.getCurrentUser();
+      setUser(content);
+    } catch (error) {
+      errorCatcher(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (localStorageService.getAccessToken()) {
+      getUserData();
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (error !== null) {
@@ -93,8 +125,8 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, signUp, currentUser }}>
-      {children}
+    <AuthContext.Provider value={{ signIn, signOut, signUp, currentUser }}>
+      {!isLoading ? children : "Loading..."}
     </AuthContext.Provider>
   );
 };

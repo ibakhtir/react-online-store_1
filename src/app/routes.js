@@ -1,12 +1,14 @@
 import Admin from "./pages/admin";
 import Main from "./pages/main";
 import Auth from "./pages/auth";
+import LogOut from "./pages/logout";
 import ShoppingCart from "./pages/shoppingCart";
 import Item from "./pages/item";
 import {
   ADMIN_ROUTE,
   MAIN_ROUTE,
   LOGIN_ROUTE,
+  LOGOUT_ROUTE,
   REGISTRATION_ROUTE,
   SHOPPING_CART_ROUTE,
   ITEM_ROUTE
@@ -27,6 +29,10 @@ export const publicRoutes = [
   {
     path: LOGIN_ROUTE,
     Component: Auth
+  },
+  {
+    path: LOGOUT_ROUTE,
+    Component: LogOut
   },
   {
     path: REGISTRATION_ROUTE,
