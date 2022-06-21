@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 
 import itemService from "../services/item.service";
 
-const ItemContext = React.createContext();
+const ItemsContext = React.createContext();
 
-export const useItem = () => {
-  return useContext(ItemContext);
+export const useItems = () => {
+  return useContext(ItemsContext);
 };
 
-const ItemProvider = ({ children }) => {
-  const [item, setItem] = useState([]);
+const ItemsProvider = ({ children }) => {
+  const [items, setItems] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,11 +22,15 @@ const ItemProvider = ({ children }) => {
   async function getItem() {
     try {
       const { content } = await itemService.get();
-      setItem(content);
+      setItems(content);
       setLoading(false);
     } catch (error) {
       errorCatcher(error);
     }
+  }
+
+  function getItemById(itemId) {
+    return items.find((i) => i._id === itemId);
   }
 
   useEffect(() => {
@@ -43,17 +47,17 @@ const ItemProvider = ({ children }) => {
   }
 
   return (
-    <ItemContext.Provider value={{ item }}>
+    <ItemsContext.Provider value={{ items, getItemById }}>
       {!isLoading ? children : "Loading..."}
-    </ItemContext.Provider>
+    </ItemsContext.Provider>
   );
 };
 
-ItemProvider.propTypes = {
+ItemsProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ])
 };
 
-export default ItemProvider;
+export default ItemsProvider;

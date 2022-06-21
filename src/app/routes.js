@@ -8,8 +8,8 @@ import {
   ADMIN_ROUTE,
   MAIN_ROUTE,
   LOGIN_ROUTE,
-  LOGOUT_ROUTE,
   REGISTRATION_ROUTE,
+  LOGOUT_ROUTE,
   SHOPPING_CART_ROUTE,
   ITEM_ROUTE
 } from "./utils/constants";
@@ -31,19 +31,19 @@ export const publicRoutes = [
     Component: Auth
   },
   {
-    path: LOGOUT_ROUTE,
-    Component: LogOut
-  },
-  {
     path: REGISTRATION_ROUTE,
     Component: Auth
+  },
+  {
+    path: LOGOUT_ROUTE,
+    Component: LogOut
   },
   {
     path: SHOPPING_CART_ROUTE,
     Component: ShoppingCart
   },
   {
-    path: ITEM_ROUTE + "/:id",
+    path: ITEM_ROUTE + "/:itemId",
     Component: Item
   }
 ];

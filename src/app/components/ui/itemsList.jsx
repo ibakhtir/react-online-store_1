@@ -1,17 +1,17 @@
 import React from "react";
 
-import { useItem } from "../../hooks/useItem";
+import { useItems } from "../../hooks/useItems";
 import ItemCard from "./itemCard";
 
-const ItemList = () => {
-  const { item } = useItem();
+const ItemsList = () => {
+  const { items } = useItems();
 
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div className="container">
         <div className="row">
-          {item.map((i) => (
-            <ItemCard key={i._id} item={i} />
+          {items.map((item) => (
+            <ItemCard key={item._id} item={item} />
           ))}
         </div>
       </div>
@@ -19,4 +19,4 @@ const ItemList = () => {
   );
 };
 
-export default ItemList;
+export default ItemsList;

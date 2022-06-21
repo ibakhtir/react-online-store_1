@@ -63,6 +63,7 @@ const RegistrationForm = () => {
       try {
         await signUp(data);
         history.push(MAIN_ROUTE);
+        setValid(true);
       } catch (error) {
         setErrors(error);
         setValid(false);

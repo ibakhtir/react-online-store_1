@@ -9,6 +9,7 @@ import localStorageService, {
 } from "../services/localStorage.service";
 import userService from "../services/user.service";
 import { MAIN_ROUTE } from "../utils/constants";
+import { createAvatar } from "../utils/createAvatar";
 
 export const httpAuth = axios.create({
   baseURL: "https://identitytoolkit.googleapis.com/v1/",
@@ -54,12 +55,6 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  function signOut() {
-    localStorageService.removeAuthData();
-    setUser(null);
-    history.push(MAIN_ROUTE);
-  }
-
   async function signUp({ email, password, ...rest }) {
     const url = "accounts:signUp";
     try {
@@ -69,7 +64,12 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
-      await createUser({ _id: data.localId, email, ...rest });
+      await createUser({
+        _id: data.localId,
+        email,
+        image: createAvatar("croodles-neutral"),
+        ...rest
+      });
     } catch (error) {
       // errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -82,6 +82,12 @@ const AuthProvider = ({ children }) => {
         }
       }
     }
+  }
+
+  function signOut() {
+    localStorageService.removeAuthData();
+    history.push(MAIN_ROUTE);
+    setUser(null);
   }
 
   async function createUser(data) {
@@ -125,7 +131,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, signOut, signUp, currentUser }}>
+    <AuthContext.Provider value={{ currentUser, signIn, signOut, signUp }}>
       {!isLoading ? children : "Loading..."}
     </AuthContext.Provider>
   );

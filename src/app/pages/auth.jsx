@@ -10,7 +10,7 @@ const Auth = () => {
   const isLogin = location.pathname === LOGIN_ROUTE;
 
   return (
-    <div className="container-auth">
+    <div className="auth-container">
       <div className="container h-100">
         <div className="d-flex justify-content-center align-items-center h-100">
           <div className="auth-block">

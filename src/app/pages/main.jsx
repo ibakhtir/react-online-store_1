@@ -1,14 +1,9 @@
 import React from "react";
 
-import ItemList from "../components/ui/itemList";
-import ItemProvider from "../hooks/useItem";
+import ItemsList from "../components/ui/itemsList";
 
 const Main = () => {
-  return (
-    <ItemProvider>
-      <ItemList />
-    </ItemProvider>
-  );
+  return <ItemsList />;
 };
 
 export default Main;

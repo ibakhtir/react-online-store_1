@@ -1,4 +1,4 @@
-.container-auth {
+.auth-container {
   height: calc(100vh - 64px);
 }
 
@@ -12,4 +12,18 @@
 
 .item-img:hover {
   transform: scale(0.9);
+}
+
+.radio-btn:active,
+.radio-btn:checked {
+  border-color: #ffbb33;
+  box-shadow: none;
+}
+
+.radio-btn:checked {
+  background-color: #ffbb33;
+}
+
+.input-field:focus {
+  border-color: #ffbb33;
 }
