@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
+import { nanoid } from "nanoid";
 
 import itemService from "../services/item.service";
 
@@ -16,10 +17,10 @@ const ItemsProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getItem();
+    getItems();
   }, []);
 
-  async function getItem() {
+  async function getItems() {
     try {
       const { content } = await itemService.get();
       setItems(content);
@@ -31,6 +32,45 @@ const ItemsProvider = ({ children }) => {
 
   function getItemById(itemId) {
     return items.find((i) => i._id === itemId);
+  }
+
+  async function createItem(data) {
+    const newItem = {
+      ...data,
+      _id: nanoid()
+    };
+    try {
+      const { content } = await itemService.create(newItem);
+      setItems((prevState) =>
+        prevState === null ? [content] : [...prevState, content]
+      );
+    } catch (error) {
+      errorCatcher(error);
+    }
+  }
+
+  async function updateItemData(data) {
+    try {
+      const { content } = await itemService.update(data);
+      setItems(
+        items.map((item) => (item._id === content._id ? content : item))
+      );
+    } catch (error) {
+      errorCatcher(error);
+    }
+  }
+
+  async function removeItem(itemId) {
+    try {
+      const { content } = await itemService.remove(itemId);
+      if (content === null) {
+        setItems((prevState) =>
+          prevState.filter((item) => item._id !== itemId)
+        );
+      }
+    } catch (error) {
+      errorCatcher(error);
+    }
   }
 
   useEffect(() => {
@@ -47,7 +87,9 @@ const ItemsProvider = ({ children }) => {
   }
 
   return (
-    <ItemsContext.Provider value={{ items, getItemById }}>
+    <ItemsContext.Provider
+      value={{ items, createItem, getItemById, updateItemData, removeItem }}
+    >
       {!isLoading ? children : "Loading..."}
     </ItemsContext.Provider>
   );

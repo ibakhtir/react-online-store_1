@@ -1,9 +1,34 @@
+.btn:focus,
+.btn:active {
+  box-shadow: none !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #ffc107;
+  box-shadow: none !important;
+}
+
+.form-check-input:active,
+.form-check-input:checked {
+  border-color: #ffc107;
+  box-shadow: none !important;
+}
+
+.form-check-input:checked {
+  background-color: #ffc107;
+}
+
+.dropdown-item:active {
+  background-color: #ffc107;
+}
+
 .auth-container {
   height: calc(100vh - 64px);
 }
 
 .auth-block {
-  width: max-content;
+  width: 440px;
 }
 
 .item-img {
@@ -12,18 +37,4 @@
 
 .item-img:hover {
   transform: scale(0.9);
-}
-
-.radio-btn:active,
-.radio-btn:checked {
-  border-color: #ffbb33;
-  box-shadow: none;
-}
-
-.radio-btn:checked {
-  background-color: #ffbb33;
-}
-
-.input-field:focus {
-  border-color: #ffbb33;
 }

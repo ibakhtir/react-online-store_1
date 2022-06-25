@@ -10,9 +10,8 @@ const ItemsList = () => {
     <div className="d-flex justify-content-center align-items-center">
       <div className="container">
         <div className="row">
-          {items.map((item) => (
-            <ItemCard key={item._id} item={item} />
-          ))}
+          {items &&
+            items.map((item) => <ItemCard key={item._id} item={item} />)}
         </div>
       </div>
     </div>

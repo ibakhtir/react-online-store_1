@@ -1,11 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TextAreaField = ({ label, name, value, onChange, error }) => {
+const TextAreaField = ({
+  label,
+  name,
+  value,
+  placeholder,
+  onChange,
+  error
+}) => {
   const getInputClasses = () => {
-    return (
-      "input-field shadow-none form-control" + (error ? " is-invalid" : "")
-    );
+    return "form-control" + (error ? " is-invalid" : "");
   };
 
   const handleChange = ({ target }) => {
@@ -14,13 +19,19 @@ const TextAreaField = ({ label, name, value, onChange, error }) => {
 
   return (
     <div className="my-2">
+      {label && (
+        <label htmlFor={name} className="form-label">
+          {label}
+        </label>
+      )}
       <textarea
+        id={name}
         name={name}
         value={value}
-        placeholder={label}
+        placeholder={placeholder}
         onChange={handleChange}
         className={getInputClasses()}
-        autoComplete="true" // устраняет ошибку autoComplete в браузере
+        autoComplete="true"
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
@@ -36,9 +47,9 @@ TextAreaField.propTypes = {
   type: PropTypes.string,
   name: PropTypes.string,
   value: PropTypes.string,
+  placeholder: PropTypes.string,
   onChange: PropTypes.func,
-  error: PropTypes.string,
-  autoComplete: PropTypes.string
+  error: PropTypes.string
 };
 
 export default TextAreaField;

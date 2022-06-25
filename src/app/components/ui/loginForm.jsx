@@ -44,6 +44,7 @@ const LoginForm = () => {
       try {
         await signIn(data);
         history.push(MAIN_ROUTE);
+        setValid(true);
       } catch (error) {
         toast.error(error.message);
       }
@@ -55,18 +56,17 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label="Электронный адрес"
-        // type="email"
         name="email"
         value={data.email}
+        placeholder="Электронный адрес"
         onChange={handleChange}
         error={errors.email}
       />
       <TextField
-        label="Пароль"
         type="password"
         name="password"
         value={data.password}
+        placeholder="Пароль"
         onChange={handleChange}
         error={errors.password}
       />

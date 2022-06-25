@@ -76,32 +76,31 @@ const RegistrationForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label="Имя"
         name="name"
         value={data.name}
+        placeholder="Имя"
         onChange={handleChange}
         error={errors.name}
       />
       <TextField
-        label="Фамилия"
         name="surname"
         value={data.surname}
+        placeholder="Фамилия"
         onChange={handleChange}
         error={errors.surname}
       />
       <TextField
-        label="Электронный адрес"
-        // type="email"
         name="email"
         value={data.email}
+        placeholder="Электронный адрес"
         onChange={handleChange}
         error={errors.email}
       />
       <TextField
-        label="Пароль"
         type="password"
         name="password"
         value={data.password}
+        placeholder="Пароль"
         onChange={handleChange}
         error={errors.password}
       />

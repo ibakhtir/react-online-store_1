@@ -24,6 +24,17 @@ const CommentsProvider = ({ children }) => {
     getComments();
   }, [itemId]);
 
+  async function getComments() {
+    try {
+      const { content } = await commentService.getComments(itemId);
+      setComments(content);
+    } catch (error) {
+      errorCatcher(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function createComment(data) {
     const comment = {
       ...data,
@@ -48,17 +59,6 @@ const CommentsProvider = ({ children }) => {
       }
     } catch (error) {
       errorCatcher(error);
-    }
-  }
-
-  async function getComments() {
-    try {
-      const { content } = await commentService.getComments(itemId);
-      setComments(content);
-    } catch (error) {
-      errorCatcher(error);
-    } finally {
-      setLoading(false);
     }
   }
 

@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TextField = ({
+const SelectField = ({
+  defaultOption,
+  options,
   label,
-  type,
   name,
   value,
-  placeholder,
   onChange,
   error
 }) => {
   const getInputClasses = () => {
-    return "form-control" + (error ? " is-invalid" : "");
+    return "form-select" + (error ? " is-invalid" : "");
   };
 
   const handleChange = ({ target }) => {
@@ -25,29 +25,38 @@ const TextField = ({
           {label}
         </label>
       )}
-      <input
-        type={type}
+      <select
+        className={getInputClasses()}
         id={name}
         name={name}
         value={value}
-        placeholder={placeholder}
         onChange={handleChange}
-        className={getInputClasses()}
-        autoComplete="true"
-      />
+      >
+        {defaultOption && (
+          <option disabled value="">
+            {defaultOption}
+          </option>
+        )}
+        {options.length > 0 &&
+          options.map((option) => (
+            <option key={option.value} value={option.name}>
+              {option.name}
+            </option>
+          ))}
+      </select>
       {error && <div className="invalid-feedback">{error}</div>}
     </div>
   );
 };
 
-TextField.propTypes = {
+SelectField.propTypes = {
+  defaultOption: PropTypes.string,
+  options: PropTypes.array,
   label: PropTypes.string,
-  type: PropTypes.string,
   name: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  placeholder: PropTypes.string,
+  value: PropTypes.string,
   onChange: PropTypes.func,
   error: PropTypes.string
 };
 
-export default TextField;
+export default SelectField;

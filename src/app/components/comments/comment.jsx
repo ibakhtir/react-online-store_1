@@ -37,7 +37,7 @@ const Comment = ({
             </p>
             {currentUser && currentUser._id === userId && (
               <button
-                className="btn-close shadow-none"
+                className="btn btn-close"
                 onClick={() => onRemove(id)}
               ></button>
             )}

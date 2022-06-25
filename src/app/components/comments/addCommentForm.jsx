@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import TextAreaField from "../forms/textAreaField";
-import RadioField from "../forms/radioField";
 import { validator } from "../../utils/validator";
 import { useAuth } from "../../hooks/useAuth";
+import TextAreaField from "../forms/textAreaField";
+import RadioField from "../forms/radioField";
+
+const initialState = { choice: "recommend", content: "" };
 
 const AddCommentForm = ({ onSubmit }) => {
-  const initialState = { choice: "recommend", content: "" };
-
   const [data, setData] = useState(initialState);
-  const [isValid, setValid] = useState(true);
   const [errors, setErrors] = useState({});
+  const [isValid, setValid] = useState(true);
   const { currentUser } = useAuth();
 
   const getDisabledForm = () => {
@@ -73,13 +73,13 @@ const AddCommentForm = ({ onSubmit }) => {
           <form onSubmit={handleSubmit}>
             <fieldset disabled={getDisabledForm()}>
               <TextAreaField
-                label={
+                name="content"
+                value={data.content}
+                placeholder={
                   currentUser
                     ? "Введите текст"
                     : "Чтобы оставить отзыв, нужно зарегистрироваться"
                 }
-                name="content"
-                value={data.content}
                 onChange={handleChange}
                 error={errors.content}
               />
@@ -93,7 +93,7 @@ const AddCommentForm = ({ onSubmit }) => {
                 onChange={handleChange}
               />
               <div className="d-flex justify-content-end">
-                <button className="btn btn-dark text-warning shadow-none mb-1">
+                <button className="btn btn-dark text-warning mb-1">
                   Опубликовать
                 </button>
               </div>
